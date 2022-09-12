@@ -62,3 +62,32 @@ package.json
 - npm run build: tsconfig.json 파일에서 include (src) 설정한 경로의 파일들을 outDir (build) 경로에 컴파일한다.
 - npm run start: 컴파일된 build 폴더의 index.js 파일을 실행한다. 운영(Production) 환경
 - npm run dev: ts-node 모듈을 통해 js 파일로 컴파일없이, ts 파일을 실행시킨다. 개발(Dev) 환경
+
+***
+
+### Node.js 모듈(패키지) 이용하기
+> npm 모듈을 ts 파일에서 사용하지 못하는 경우가 있다. (*또는 빨간줄*) <br>
+> js 파일을 ts가 타입 추론을 못하는 경우인데, 이 경우 package.js package.d.ts 파일에서 타입을 추론해주어야 한다. <br>
+> tsconfig.json - allowJs 속성을 true 설정을 통해 js 모듈을 사용할 수 있다. <br>
+> 또는 `npm i @types/node` 설치([Github:DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/node))를 통해 해결할 수 있는데, 많은 개발자들이 기존 javascript module을 타입스크립트에서 사용할 수 있게 d.ts 파일로 변환하였다. <br>
+> d.ts 파일을 포함시킨 npm 모듈도 많다.
+
+<br>
+
+#### 커스텀 JS 모듈. 타입스크립트에서 사용하기
+> 기존에 사용하던 라이브러리를 사용할 경우, 타입스크립트 프로젝트에서 사용하기 위해, d.ts 파일을 만들어주거나,  ts 파일로 새로 작성하는 건 매우 귀찮다. 또는 잘못 수정하여 기존 로직에 문제가 발생할 수 있다.<br>
+> 아래 코드가 기존 라이브러리 js 파일이라면, 가장 윗 줄 `@ts-check`를 선언하고, 함수나 변수 위에 `/**  */`로 주석(설명, @param, @returns 타입)을 설정한다. 
+> ts 파일에서 라이브러리를 사용할 때, 타입 추론을 할 수 있게 해준다.
+```javascript
+// @ts-check
+
+/**
+ * Exits the program
+ * @param {number} code
+ * @returns number
+ */
+export function exit(code) {
+  return code + 1;
+}
+```
+***
